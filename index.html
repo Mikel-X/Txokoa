@@ -355,8 +355,8 @@
 
 <!-- ════ PANTALLA DE CONTRASEÑA ════ -->
 <div id="lock-screen">
-  <h1 class="lock-title">Mi rincón</h1>
-  <p class="lock-subtitle">Solo para los de siempre</p>
+  <h1 class="lock-title">Gure txokoa</h1>
+  <p class="lock-subtitle">gure pasahitza</p>
   <div class="lock-form">
     <input type="password" id="pwd-input" placeholder="Contraseña" autocomplete="off">
     <button onclick="checkPassword()">Entrar</button>
@@ -370,14 +370,14 @@
   <header>
     <div class="site-name">Mi rincón</div>
     <nav>
-      <a href="#" class="active" onclick="showSection('gallery', this)">Fotos</a>
-      <a href="#" onclick="showSection('blog', this)">Entradas</a>
+      <a href="#" class="active" onclick="showSection('gallery', this)">Argazkiak</a>
+      <a href="#" onclick="showSection('blog', this)">sarrerak</a>
     </nav>
   </header>
 
   <!-- GALERÍA -->
   <section class="section active" id="gallery">
-    <p class="section-label">Fotos</p>
+    <p class="section-label">Argazkiak</p>
     <div class="gallery-grid" id="gallery-grid">
       <!-- Las fotos se generan desde el array en el JS -->
     </div>
@@ -385,7 +385,7 @@
 
   <!-- BLOG (lista) -->
   <section class="section" id="blog">
-    <p class="section-label">Entradas</p>
+    <p class="section-label">sarrerak</p>
     <div class="post-list" id="post-list"></div>
   </section>
 
@@ -397,7 +397,7 @@
     <div class="post-full-body" id="pv-body"></div>
   </div>
 
-  <footer>Hecho con cariño · Solo para los de siempre</footer>
+  <footer>Maitasunez eginda</footer>
 </div>
 
 <!-- LIGHTBOX -->
@@ -418,8 +418,8 @@
   // src: ruta a la imagen (ej: "fotos/playa.jpg") o URL
   // caption: texto que aparece al pasar el ratón
   const PHOTOS = [
-    { src: "", caption: "Verano en la costa" },
-    { src: "", caption: "Atardecer" },
+    { src: "", caption: "Lehenengo bidaia" },
+    { src: "", caption: "Bigarren bidaia" },
     { src: "", caption: "Café de la mañana" },
     { src: "", caption: "Por las calles" },
     { src: "", caption: "Montaña" },
@@ -433,8 +433,8 @@
   // body: texto completo (usa \n\n para separar párrafos)
   const POSTS = [
     {
-      date: "Marzo 2025",
-      title: "Por qué hice esta web",
+      date: "Marzo 2026",
+      title: "Zergatik egin nuen WEB hau?",
       excerpt: "Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes.",
       body: `Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes sociales.\n\nNada de algoritmos, nada de notificaciones. Solo fotos y palabras, para los que me importáis.\n\nEspero que os guste.`
     },
