@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi rincón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --text: #1a1a18;
+      --muted: #8a8880;
+      --accent: #2d2d2a;
+      --line: #e8e4df;
+      --serif: 'Lora', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── PANTALLA DE CONTRASEÑA ── */
+    #lock-screen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 999;
+      gap: 28px;
+      transition: opacity 0.5s ease;
+    }
+
+    #lock-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lock-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .lock-subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: -16px;
+    }
+
+    .lock-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .lock-form input {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      border: 1.5px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      text-align: center;
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .lock-form input:focus { border-color: var(--accent); }
+
+    .lock-form button {
+      width: 100%;
+      padding: 11px;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .lock-form button:hover { opacity: 0.82; }
+
+    .lock-error {
+      font-size: 0.8rem;
+      color: #b05050;
+      height: 16px;
+      text-align: center;
+    }
+
+    /* ── LAYOUT PRINCIPAL ── */
+    #main { display: none; }
+    #main.visible { display: block; }
+
+    header {
+      padding: 40px 0 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-name {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    nav {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    nav a {
+      font-size: 0.82rem;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active { color: var(--text); }
+
+    /* ── SECCIONES ── */
+    .section {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 64px 24px;
+      display: none;
+    }
+
+    .section.active { display: block; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    /* ── GALERÍA ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2px;
+    }
+
+    .photo-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--line);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .photo-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease, opacity 0.3s;
+    }
+
+    .photo-item:hover img { transform: scale(1.04); }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 12px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.35));
+      color: #fff;
+      font-size: 0.78rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .photo-item:hover .photo-caption { opacity: 1; }
+
+    /* Placeholder cuando no hay fotos reales */
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .photo-placeholder svg { opacity: 0.4; }
+
+    /* ── BLOG ── */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .post-item {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .post-item:first-child { border-top: 1px solid var(--line); }
+    .post-item:hover { opacity: 0.7; }
+
+    .post-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .post-title {
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-weight: 400;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .post-excerpt {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* Vista de post individual */
+    #post-view {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 64px 24px;
+      display: none;
+    }
+
+    #post-view.active { display: block; }
+
+    .back-btn {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 48px;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--text); }
+
+    .post-full-date {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .post-full-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 40px;
+    }
+
+    .post-full-body {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #2e2e2b;
+    }
+
+    .post-full-body p { margin-bottom: 1.4em; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #lightbox.open { opacity: 1; pointer-events: all; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+
+    #lightbox-caption {
+      position: absolute;
+      bottom: 28px;
+      left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    #lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      color: rgba(255,255,255,0.6);
+      font-size: 1.6rem;
+      cursor: pointer;
+      background: none; border: none;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    #lightbox-close:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- ════ PANTALLA DE CONTRASEÑA ════ -->
+<div id="lock-screen">
+  <h1 class="lock-title">Mi rincón</h1>
+  <p class="lock-subtitle">Solo para los de siempre</p>
+  <div class="lock-form">
+    <input type="password" id="pwd-input" placeholder="Contraseña" autocomplete="off">
+    <button onclick="checkPassword()">Entrar</button>
+    <p class="lock-error" id="lock-error"></p>
+  </div>
+</div>
+
+<!-- ════ CONTENIDO PRINCIPAL ════ -->
+<div id="main">
+
+  <header>
+    <div class="site-name">Mi rincón</div>
+    <nav>
+      <a href="#" class="active" onclick="showSection('gallery', this)">Fotos</a>
+      <a href="#" onclick="showSection('blog', this)">Entradas</a>
+    </nav>
+  </header>
+
+  <!-- GALERÍA -->
+  <section class="section active" id="gallery">
+    <p class="section-label">Fotos</p>
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Las fotos se generan desde el array en el JS -->
+    </div>
+  </section>
+
+  <!-- BLOG (lista) -->
+  <section class="section" id="blog">
+    <p class="section-label">Entradas</p>
+    <div class="post-list" id="post-list"></div>
+  </section>
+
+  <!-- POST INDIVIDUAL -->
+  <div id="post-view">
+    <button class="back-btn" onclick="closePost()">← Volver</button>
+    <p class="post-full-date" id="pv-date"></p>
+    <h2 class="post-full-title" id="pv-title"></h2>
+    <div class="post-full-body" id="pv-body"></div>
+  </div>
+
+  <footer>Hecho con cariño · Solo para los de siempre</footer>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+  <p id="lightbox-caption"></p>
+</div>
+
+<script>
+  // ══════════════════════════════════════════
+  //  ⚙️  CONFIGURACIÓN — edita esto a tu gusto
+  // ══════════════════════════════════════════
+
+  const PASSWORD = "amigos2025"; // 🔑 Cambia esta contraseña
+
+  // 📸 Fotos — añade tus fotos aquí
+  // src: ruta a la imagen (ej: "fotos/playa.jpg") o URL
+  // caption: texto que aparece al pasar el ratón
+  const PHOTOS = [
+    { src: "", caption: "Verano en la costa" },
+    { src: "", caption: "Atardecer" },
+    { src: "", caption: "Café de la mañana" },
+    { src: "", caption: "Por las calles" },
+    { src: "", caption: "Montaña" },
+    { src: "", caption: "Momento favorito" },
+  ];
+
+  // 📝 Entradas del blog
+  // date: fecha en texto libre
+  // title: título
+  // excerpt: resumen (aparece en la lista)
+  // body: texto completo (usa \n\n para separar párrafos)
+  const POSTS = [
+    {
+      date: "Marzo 2025",
+      title: "Por qué hice esta web",
+      excerpt: "Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes.",
+      body: `Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes sociales.\n\nNada de algoritmos, nada de notificaciones. Solo fotos y palabras, para los que me importáis.\n\nEspero que os guste.`
+    },
+    {
+      date: "Febrero 2025",
+      title: "El primer viaje del año",
+      excerpt: "Arrancamos el año con las maletas hechas. Os cuento cómo fue.",
+      body: `Arrancamos el año con las maletas hechas y muchas ganas.\n\nFuimos sin plan fijo, lo cual resultó ser la mejor decisión posible. Cada día traía algo inesperado.\n\nYa tenéis las fotos en la galería. Pronto cuento más.`
+    },
+  ];
+
+  // ══════════════════════════════════════════
+  //  LÓGICA — no hace falta tocar esto
+  // ══════════════════════════════════════════
+
+  function checkPassword() {
+    const input = document.getElementById('pwd-input').value;
+    const error = document.getElementById('lock-error');
+    if (input === PASSWORD) {
+      const lock = document.getElementById('lock-screen');
+      lock.classList.add('fade-out');
+      setTimeout(() => {
+        lock.style.display = 'none';
+        const main = document.getElementById('main');
+        main.classList.add('visible');
+        buildGallery();
+        buildBlog();
+      }, 500);
+    } else {
+      error.textContent = 'Contraseña incorrecta';
+      document.getElementById('pwd-input').value = '';
+      setTimeout(() => error.textContent = '', 2000);
+    }
+  }
+
+  document.getElementById('pwd-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Galería
+  function buildGallery() {
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = '';
+    PHOTOS.forEach((p, i) => {
+      const item = document.createElement('div');
+      item.className = 'photo-item';
+      if (p.src) {
+        item.innerHTML = `
+          <img src="${p.src}" alt="${p.caption}" loading="lazy">
+          <div class="photo-caption">${p.caption}</div>
+        `;
+        item.onclick = () => openLightbox(p.src, p.caption);
+      } else {
+        // Placeholder hasta que añadas fotos reales
+        item.innerHTML = `
+          <div class="photo-placeholder">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            ${p.caption}
+          </div>
+        `;
+      }
+      grid.appendChild(item);
+    });
+  }
+
+  // Blog
+  function buildBlog() {
+    const list = document.getElementById('post-list');
+    list.innerHTML = '';
+    POSTS.forEach((post, i) => {
+      const item = document.createElement('div');
+      item.className = 'post-item';
+      item.innerHTML = `
+        <p class="post-meta">${post.date}</p>
+        <h2 class="post-title">${post.title}</h2>
+        <p class="post-excerpt">${post.excerpt}</p>
+      `;
+      item.onclick = () => openPost(i);
+      list.appendChild(item);
+    });
+  }
+
+  function openPost(i) {
+    const post = POSTS[i];
+    document.getElementById('pv-date').textContent = post.date;
+    document.getElementById('pv-title').textContent = post.title;
+    document.getElementById('pv-body').innerHTML = post.body
+      .split('\n\n').map(p => `<p>${p}</p>`).join('');
+
+    document.getElementById('blog').classList.remove('active');
+    document.getElementById('post-view').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closePost() {
+    document.getElementById('post-view').classList.remove('active');
+    document.getElementById('blog').classList.add('active');
+  }
+
+  function showSection(id, link) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('post-view').classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+  }
+
+  // Lightbox
+  function openLightbox(src, caption) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-caption').textContent = caption;
+    document.getElementById('lightbox').classList.add('open');
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>
