@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi rincón</title>
+  <title>Gure gauzak</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
   <style>
@@ -37,78 +37,49 @@
       gap: 28px;
       transition: opacity 0.5s ease;
     }
-
-    #lock-screen.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
+    #lock-screen.fade-out { opacity: 0; pointer-events: none; }
 
     .lock-title {
       font-family: var(--serif);
       font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: 400;
       letter-spacing: -0.01em;
-      color: var(--text);
     }
-
     .lock-subtitle {
       font-size: 0.85rem;
       color: var(--muted);
       letter-spacing: 0.04em;
       margin-top: -16px;
     }
-
     .lock-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      max-width: 280px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      width: 100%; max-width: 280px;
     }
-
     .lock-form input {
-      width: 100%;
-      padding: 12px 16px;
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      border: 1.5px solid var(--line);
-      border-radius: 6px;
-      background: var(--surface);
-      color: var(--text);
-      text-align: center;
-      letter-spacing: 0.1em;
-      outline: none;
-      transition: border-color 0.2s;
+      width: 100%; padding: 12px 16px;
+      font-family: var(--sans); font-size: 0.95rem;
+      border: 1.5px solid var(--line); border-radius: 6px;
+      background: var(--surface); color: var(--text);
+      text-align: center; letter-spacing: 0.1em;
+      outline: none; transition: border-color 0.2s;
     }
-
     .lock-form input:focus { border-color: var(--accent); }
-
     .lock-form button {
-      width: 100%;
-      padding: 11px;
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: opacity 0.2s;
+      width: 100%; padding: 11px;
+      font-family: var(--sans); font-size: 0.85rem;
+      font-weight: 400; letter-spacing: 0.06em;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 6px;
+      cursor: pointer; transition: opacity 0.2s;
     }
-
     .lock-form button:hover { opacity: 0.82; }
-
     .lock-error {
-      font-size: 0.8rem;
-      color: #b05050;
-      height: 16px;
-      text-align: center;
+      font-size: 0.8rem; color: #b05050;
+      height: 16px; text-align: center;
     }
 
-    /* ── LAYOUT PRINCIPAL ── */
+    /* ── LAYOUT ── */
     #main { display: none; }
     #main.visible { display: block; }
 
@@ -117,246 +88,222 @@
       text-align: center;
       border-bottom: 1px solid var(--line);
     }
-
     .site-name {
       font-family: var(--serif);
       font-size: clamp(1.4rem, 3vw, 1.9rem);
-      font-weight: 400;
-      letter-spacing: -0.01em;
+      font-weight: 400; letter-spacing: -0.01em;
     }
-
     nav {
       margin-top: 18px;
-      display: flex;
-      justify-content: center;
-      gap: 32px;
+      display: flex; justify-content: center; gap: 32px;
     }
-
     nav a {
-      font-size: 0.82rem;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.2s;
+      font-size: 0.82rem; letter-spacing: 0.07em;
+      color: var(--muted); text-decoration: none;
+      text-transform: uppercase; transition: color 0.2s;
+      cursor: pointer;
     }
-
     nav a:hover, nav a.active { color: var(--text); }
 
-    /* ── SECCIONES ── */
-    .section {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 64px 24px;
-      display: none;
-    }
+    /* ── VISTAS ── */
+    .view { display: none; }
+    .view.active { display: block; }
 
-    .section.active { display: block; }
-
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+    /* ── PÁGINA DE ÁLBUMES ── */
+    .page-label {
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
       margin-bottom: 40px;
     }
 
-    /* ── GALERÍA ── */
-    .gallery-grid {
+    .albums-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 2px;
     }
 
-    .photo-item {
-      aspect-ratio: 1;
-      overflow: hidden;
-      background: var(--line);
-      cursor: pointer;
+    .album-card {
       position: relative;
+      aspect-ratio: 3/2;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--line);
     }
 
-    .photo-item img {
+    .album-card img {
       width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease, opacity 0.3s;
+      object-fit: cover; display: block;
+      transition: transform 0.6s ease;
+    }
+    .album-card:hover img { transform: scale(1.05); }
+
+    .album-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 55%, transparent 100%);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px 18px;
+    }
+    .album-name {
+      font-family: var(--serif);
+      font-size: 1.1rem; font-weight: 400;
+      color: #fff; line-height: 1.3;
+    }
+    .album-count {
+      font-size: 0.72rem; color: rgba(255,255,255,0.65);
+      letter-spacing: 0.05em; margin-top: 4px;
     }
 
-    .photo-item:hover img { transform: scale(1.04); }
-
-    .photo-caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 20px 12px 10px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.35));
-      color: #fff;
-      font-size: 0.78rem;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .photo-item:hover .photo-caption { opacity: 1; }
-
-    /* Placeholder cuando no hay fotos reales */
-    .photo-placeholder {
+    .album-placeholder {
       width: 100%; height: 100%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      text-align: center;
-      padding: 12px;
+      gap: 10px; color: var(--muted);
+      font-size: 0.8rem; padding: 16px; text-align: center;
     }
+    .album-placeholder svg { opacity: 0.35; }
 
-    .photo-placeholder svg { opacity: 0.4; }
-
-    /* ── BLOG ── */
-    .post-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .post-item {
-      padding: 32px 0;
-      border-bottom: 1px solid var(--line);
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .post-item:first-child { border-top: 1px solid var(--line); }
-    .post-item:hover { opacity: 0.7; }
-
-    .post-meta {
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .post-title {
-      font-family: var(--serif);
-      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-      font-weight: 400;
-      line-height: 1.35;
-      margin-bottom: 10px;
-    }
-
-    .post-excerpt {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 560px;
-    }
-
-    /* Vista de post individual */
-    #post-view {
-      max-width: 620px;
-      margin: 0 auto;
-      padding: 64px 24px;
-      display: none;
-    }
-
-    #post-view.active { display: block; }
-
+    /* ── GALERÍA INDIVIDUAL ── */
     .back-btn {
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      margin-bottom: 48px;
+      font-size: 0.8rem; letter-spacing: 0.05em;
+      color: var(--muted); background: none; border: none;
+      cursor: pointer; padding: 0; margin-bottom: 40px;
       display: flex; align-items: center; gap: 6px;
       transition: color 0.2s;
     }
-
     .back-btn:hover { color: var(--text); }
 
-    .post-full-date {
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin-bottom: 20px;
+    .gallery-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--line);
+    }
+    .gallery-title {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 400; line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .gallery-description {
+      font-family: var(--serif);
+      font-size: 0.97rem; line-height: 1.8;
+      color: #3a3a38; max-width: 580px;
     }
 
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .photo-item { cursor: pointer; }
+    .photo-item-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--line);
+      margin-bottom: 10px;
+    }
+    .photo-item-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.5s ease;
+    }
+    .photo-item:hover .photo-item-img img { transform: scale(1.04); }
+    .photo-caption-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .photo-placeholder-inner {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px; color: var(--muted);
+      font-size: 0.75rem; text-align: center; padding: 12px;
+    }
+    .photo-placeholder-inner svg { opacity: 0.35; }
+
+    /* ── BLOG ── */
+    .post-item {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .post-item:first-child { border-top: 1px solid var(--line); }
+    .post-item:hover { opacity: 0.7; }
+    .post-meta { font-size: 0.75rem; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 10px; }
+    .post-title-h {
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-weight: 400; line-height: 1.35; margin-bottom: 10px;
+    }
+    .post-excerpt { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── POST INDIVIDUAL ── */
+    .post-full-date { font-size: 0.75rem; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 20px; }
     .post-full-title {
       font-family: var(--serif);
       font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 400;
-      line-height: 1.25;
-      margin-bottom: 40px;
+      font-weight: 400; line-height: 1.25; margin-bottom: 40px;
     }
-
     .post-full-body {
       font-family: var(--serif);
-      font-size: 1rem;
-      line-height: 1.85;
-      color: #2e2e2b;
+      font-size: 1rem; line-height: 1.85; color: #2e2e2b;
     }
-
     .post-full-body p { margin-bottom: 1.4em; }
-
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 48px 24px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      letter-spacing: 0.04em;
-    }
 
     /* ── LIGHTBOX ── */
     #lightbox {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.88);
+      background: rgba(0,0,0,0.9);
       display: flex; align-items: center; justify-content: center;
-      z-index: 200;
-      opacity: 0; pointer-events: none;
+      z-index: 200; opacity: 0; pointer-events: none;
       transition: opacity 0.3s;
     }
-
     #lightbox.open { opacity: 1; pointer-events: all; }
-
     #lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 2px;
+      max-width: 90vw; max-height: 82vh;
+      object-fit: contain; border-radius: 2px;
     }
-
     #lightbox-caption {
-      position: absolute;
-      bottom: 28px;
+      position: absolute; bottom: 24px;
       left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.7);
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.82rem; letter-spacing: 0.03em;
+      text-align: center; max-width: 60vw;
+      font-family: var(--serif); font-style: italic;
     }
-
     #lightbox-close {
-      position: absolute; top: 20px; right: 24px;
-      color: rgba(255,255,255,0.6);
-      font-size: 1.6rem;
-      cursor: pointer;
-      background: none; border: none;
-      line-height: 1;
-      transition: color 0.2s;
+      position: absolute; top: 18px; right: 22px;
+      color: rgba(255,255,255,0.55); font-size: 1.8rem;
+      cursor: pointer; background: none; border: none;
+      line-height: 1; transition: color 0.2s;
     }
-
     #lightbox-close:hover { color: #fff; }
+    #lightbox-prev, #lightbox-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: rgba(255,255,255,0.55);
+      font-size: 2.4rem; cursor: pointer; padding: 16px;
+      transition: color 0.2s; line-height: 1;
+    }
+    #lightbox-prev { left: 8px; }
+    #lightbox-next { right: 8px; }
+    #lightbox-prev:hover, #lightbox-next:hover { color: #fff; }
+
+    footer {
+      text-align: center; padding: 48px 24px;
+      font-size: 0.75rem; color: var(--muted);
+      border-top: 1px solid var(--line); letter-spacing: 0.04em;
+    }
   </style>
 </head>
 <body>
 
-<!-- ════ PANTALLA DE CONTRASEÑA ════ -->
+<!-- ════ CONTRASEÑA ════ -->
 <div id="lock-screen">
-  <h1 class="lock-title">Gure txokoa</h1>
-  <p class="lock-subtitle">gure pasahitza</p>
+  <h1 class="lock-title">Gure gauzak</h1>
+  <p class="lock-subtitle">Solo para los de siempre</p>
   <div class="lock-form">
     <input type="password" id="pwd-input" placeholder="Contraseña" autocomplete="off">
     <button onclick="checkPassword()">Entrar</button>
@@ -364,201 +311,362 @@
   </div>
 </div>
 
-<!-- ════ CONTENIDO PRINCIPAL ════ -->
+<!-- ════ PRINCIPAL ════ -->
 <div id="main">
-
   <header>
-    <div class="site-name">Mi rincón</div>
+    <div class="site-name">Gure gauzak</div>
     <nav>
-      <a href="#" class="active" onclick="showSection('gallery', this)">Argazkiak</a>
-      <a href="#" onclick="showSection('blog', this)">sarrerak</a>
+      <a onclick="showView('home', this)" class="active">Fotos</a>
+      <a onclick="showView('blog', this)">Entradas</a>
     </nav>
   </header>
 
-  <!-- GALERÍA -->
-  <section class="section active" id="gallery">
-    <p class="section-label">Argazkiak</p>
-    <div class="gallery-grid" id="gallery-grid">
-      <!-- Las fotos se generan desde el array en el JS -->
+  <!-- INICIO: rejilla de álbumes -->
+  <div id="view-home" class="view active">
+    <div style="max-width:900px;margin:0 auto;padding:64px 24px;">
+      <p class="page-label">Gure gauzak</p>
+      <div class="albums-grid" id="albums-grid"></div>
     </div>
-  </section>
-
-  <!-- BLOG (lista) -->
-  <section class="section" id="blog">
-    <p class="section-label">sarrerak</p>
-    <div class="post-list" id="post-list"></div>
-  </section>
-
-  <!-- POST INDIVIDUAL -->
-  <div id="post-view">
-    <button class="back-btn" onclick="closePost()">← Volver</button>
-    <p class="post-full-date" id="pv-date"></p>
-    <h2 class="post-full-title" id="pv-title"></h2>
-    <div class="post-full-body" id="pv-body"></div>
   </div>
 
-  <footer>Maitasunez eginda</footer>
+  <!-- GALERÍA INDIVIDUAL -->
+  <div id="view-gallery" class="view">
+    <div style="max-width:900px;margin:0 auto;padding:48px 24px 80px;">
+      <button class="back-btn" onclick="goBack()">← Volver</button>
+      <div class="gallery-header">
+        <h2 class="gallery-title" id="g-title"></h2>
+        <p class="gallery-description" id="g-desc"></p>
+      </div>
+      <div class="gallery-grid" id="g-grid"></div>
+    </div>
+  </div>
+
+  <!-- BLOG: lista -->
+  <div id="view-blog" class="view">
+    <div style="max-width:620px;margin:0 auto;padding:64px 24px;">
+      <p class="page-label">Entradas</p>
+      <div id="post-list"></div>
+    </div>
+  </div>
+
+  <!-- POST INDIVIDUAL -->
+  <div id="view-post" class="view">
+    <div style="max-width:620px;margin:0 auto;padding:64px 24px;">
+      <p class="post-full-date" id="pv-date"></p>
+      <h2 class="post-full-title" id="pv-title"></h2>
+      <div class="post-full-body" id="pv-body"></div>
+      <button class="back-btn" style="margin-top:48px" onclick="showView('blog', null)">← Volver a entradas</button>
+    </div>
+  </div>
+
+  <footer>Gure gauzak · Solo para los de siempre</footer>
 </div>
 
 <!-- LIGHTBOX -->
-<div id="lightbox" onclick="closeLightbox()">
+<div id="lightbox" onclick="handleLightboxClick(event)">
   <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <button id="lightbox-prev" onclick="lightboxNav(-1); event.stopPropagation()">‹</button>
   <img id="lightbox-img" src="" alt="">
+  <button id="lightbox-next" onclick="lightboxNav(1); event.stopPropagation()">›</button>
   <p id="lightbox-caption"></p>
 </div>
 
 <script>
-  // ══════════════════════════════════════════
-  //  ⚙️  CONFIGURACIÓN — edita esto a tu gusto
-  // ══════════════════════════════════════════
+// ══════════════════════════════════════════════════
+//  ⚙️  CONFIGURACIÓN — edita esto a tu gusto
+// ══════════════════════════════════════════════════
 
-  const PASSWORD = "amigos2025"; // 🔑 Cambia esta contraseña
+const PASSWORD = "amigos2025"; // 🔑 Cambia esta contraseña
 
-  // 📸 Fotos — añade tus fotos aquí
-  // src: ruta a la imagen (ej: "fotos/playa.jpg") o URL
-  // caption: texto que aparece al pasar el ratón
-  const PHOTOS = [
-    { src: "fotos/20231222_091441.jpg", caption: "Lehenengo bidaia" },
-    { src: "", caption: "Bigarren bidaia" },
-    { src: "", caption: "Café de la mañana" },
-    { src: "", caption: "Por las calles" },
-    { src: "", caption: "Montaña" },
-    { src: "", caption: "Momento favorito" },
-  ];
+// 8 ÁLBUMES
+// name:        nombre del álbum (aparece en la portada y en la galería)
+// cover:       foto de portada   ej: "fotos/album1/portada.jpg"
+// description: texto introductorio de la galería
+// photos:      array de fotos, cada una con src y caption
 
-  // 📝 Entradas del blog
-  // date: fecha en texto libre
-  // title: título
-  // excerpt: resumen (aparece en la lista)
-  // body: texto completo (usa \n\n para separar párrafos)
-  const POSTS = [
-    {
-      date: "Marzo 2026",
-      title: "Zergatik egin nuen WEB hau?",
-      excerpt: "Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes.",
-      body: `Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes sociales.\n\nNada de algoritmos, nada de notificaciones. Solo fotos y palabras, para los que me importáis.\n\nEspero que os guste.`
-    },
-    {
-      date: "Febrero 2025",
-      title: "El primer viaje del año",
-      excerpt: "Arrancamos el año con las maletas hechas. Os cuento cómo fue.",
-      body: `Arrancamos el año con las maletas hechas y muchas ganas.\n\nFuimos sin plan fijo, lo cual resultó ser la mejor decisión posible. Cada día traía algo inesperado.\n\nYa tenéis las fotos en la galería. Pronto cuento más.`
-    },
-  ];
+const ALBUMS = [
+  {
+    name: "Álbum 1",
+    cover: "",
+    description: "Escribe aquí lo que quieras contar sobre este álbum. Dónde fue, cuándo, con quién, qué significó.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 2",
+    cover: "",
+    description: "Descripción del álbum 2.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 3",
+    cover: "",
+    description: "Descripción del álbum 3.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 4",
+    cover: "",
+    description: "Descripción del álbum 4.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 5",
+    cover: "",
+    description: "Descripción del álbum 5.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 6",
+    cover: "",
+    description: "Descripción del álbum 6.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 7",
+    cover: "",
+    description: "Descripción del álbum 7.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+  {
+    name: "Álbum 8",
+    cover: "",
+    description: "Descripción del álbum 8.",
+    photos: [
+      { src: "", caption: "Pie de foto 1" },
+      { src: "", caption: "Pie de foto 2" },
+      { src: "", caption: "Pie de foto 3" },
+      { src: "", caption: "Pie de foto 4" },
+    ]
+  },
+];
 
-  // ══════════════════════════════════════════
-  //  LÓGICA — no hace falta tocar esto
-  // ══════════════════════════════════════════
+// ENTRADAS DEL BLOG
+const POSTS = [
+  {
+    date: "Marzo 2025",
+    title: "Por qué hice esta web",
+    excerpt: "Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes.",
+    body: `Quería un sitio tranquilo donde guardar cosas y compartirlas con vosotros sin el ruido de las redes sociales.\n\nNada de algoritmos, nada de notificaciones. Solo fotos y palabras, para los que me importáis.\n\nEspero que os guste.`
+  },
+];
 
-  function checkPassword() {
-    const input = document.getElementById('pwd-input').value;
-    const error = document.getElementById('lock-error');
-    if (input === PASSWORD) {
-      const lock = document.getElementById('lock-screen');
-      lock.classList.add('fade-out');
-      setTimeout(() => {
-        lock.style.display = 'none';
-        const main = document.getElementById('main');
-        main.classList.add('visible');
-        buildGallery();
-        buildBlog();
-      }, 500);
-    } else {
-      error.textContent = 'Contraseña incorrecta';
-      document.getElementById('pwd-input').value = '';
-      setTimeout(() => error.textContent = '', 2000);
-    }
+// ══════════════════════════════════════════════════
+//  LÓGICA
+// ══════════════════════════════════════════════════
+
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+
+function checkPassword() {
+  const input = document.getElementById('pwd-input').value;
+  const error = document.getElementById('lock-error');
+  if (input === PASSWORD) {
+    const lock = document.getElementById('lock-screen');
+    lock.classList.add('fade-out');
+    setTimeout(() => {
+      lock.style.display = 'none';
+      document.getElementById('main').classList.add('visible');
+      buildAlbums();
+      buildBlog();
+    }, 500);
+  } else {
+    error.textContent = 'Contraseña incorrecta';
+    document.getElementById('pwd-input').value = '';
+    setTimeout(() => error.textContent = '', 2000);
   }
+}
 
+document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pwd-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') checkPassword();
   });
+});
 
-  // Galería
-  function buildGallery() {
-    const grid = document.getElementById('gallery-grid');
-    grid.innerHTML = '';
-    PHOTOS.forEach((p, i) => {
-      const item = document.createElement('div');
-      item.className = 'photo-item';
-      if (p.src) {
-        item.innerHTML = `
-          <img src="${p.src}" alt="${p.caption}" loading="lazy">
-          <div class="photo-caption">${p.caption}</div>
-        `;
-        item.onclick = () => openLightbox(p.src, p.caption);
-      } else {
-        // Placeholder hasta que añadas fotos reales
-        item.innerHTML = `
-          <div class="photo-placeholder">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-              <path d="M21 15l-5-5L5 21"/>
-            </svg>
-            ${p.caption}
-          </div>
-        `;
-      }
-      grid.appendChild(item);
-    });
-  }
-
-  // Blog
-  function buildBlog() {
-    const list = document.getElementById('post-list');
-    list.innerHTML = '';
-    POSTS.forEach((post, i) => {
-      const item = document.createElement('div');
-      item.className = 'post-item';
-      item.innerHTML = `
-        <p class="post-meta">${post.date}</p>
-        <h2 class="post-title">${post.title}</h2>
-        <p class="post-excerpt">${post.excerpt}</p>
-      `;
-      item.onclick = () => openPost(i);
-      list.appendChild(item);
-    });
-  }
-
-  function openPost(i) {
-    const post = POSTS[i];
-    document.getElementById('pv-date').textContent = post.date;
-    document.getElementById('pv-title').textContent = post.title;
-    document.getElementById('pv-body').innerHTML = post.body
-      .split('\n\n').map(p => `<p>${p}</p>`).join('');
-
-    document.getElementById('blog').classList.remove('active');
-    document.getElementById('post-view').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function closePost() {
-    document.getElementById('post-view').classList.remove('active');
-    document.getElementById('blog').classList.add('active');
-  }
-
-  function showSection(id, link) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('post-view').classList.remove('active');
-    document.getElementById(id).classList.add('active');
+function showView(id, linkEl) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (linkEl) {
     document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-    link.classList.add('active');
+    linkEl.classList.add('active');
   }
+}
 
-  // Lightbox
-  function openLightbox(src, caption) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox-caption').textContent = caption;
-    document.getElementById('lightbox').classList.add('open');
-  }
+function goBack() {
+  showView('home', document.querySelector('nav a:first-child'));
+}
 
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-  }
+// Construir rejilla de álbumes
+function buildAlbums() {
+  const grid = document.getElementById('albums-grid');
+  grid.innerHTML = '';
+  ALBUMS.forEach((album, i) => {
+    const card = document.createElement('div');
+    card.className = 'album-card';
+    card.onclick = () => openAlbum(i);
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeLightbox();
+    if (album.cover) {
+      card.innerHTML = `
+        <img src="${album.cover}" alt="${album.name}" loading="lazy">
+        <div class="album-overlay">
+          <div class="album-name">${album.name}</div>
+          <div class="album-count">${album.photos.length} fotos</div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="album-placeholder">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          ${album.name}
+        </div>
+      `;
+    }
+    grid.appendChild(card);
   });
+}
+
+// Abrir galería de un álbum
+function openAlbum(i) {
+  const album = ALBUMS[i];
+  document.getElementById('g-title').textContent = album.name;
+  document.getElementById('g-desc').textContent = album.description;
+
+  lightboxPhotos = album.photos;
+
+  const grid = document.getElementById('g-grid');
+  grid.innerHTML = '';
+  album.photos.forEach((photo, j) => {
+    const item = document.createElement('div');
+    item.className = 'photo-item';
+    item.onclick = () => openLightbox(j);
+
+    const imgBox = document.createElement('div');
+    imgBox.className = 'photo-item-img';
+    if (photo.src) {
+      imgBox.innerHTML = `<img src="${photo.src}" alt="${photo.caption}" loading="lazy">`;
+    } else {
+      imgBox.innerHTML = `
+        <div class="photo-placeholder-inner">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+      `;
+    }
+
+    const caption = document.createElement('p');
+    caption.className = 'photo-caption-text';
+    caption.textContent = photo.caption;
+
+    item.appendChild(imgBox);
+    item.appendChild(caption);
+    grid.appendChild(item);
+  });
+
+  showView('gallery', null);
+}
+
+// Blog
+function buildBlog() {
+  const list = document.getElementById('post-list');
+  list.innerHTML = '';
+  POSTS.forEach((post, i) => {
+    const item = document.createElement('div');
+    item.className = 'post-item';
+    item.innerHTML = `
+      <p class="post-meta">${post.date}</p>
+      <h2 class="post-title-h">${post.title}</h2>
+      <p class="post-excerpt">${post.excerpt}</p>
+    `;
+    item.onclick = () => openPost(i);
+    list.appendChild(item);
+  });
+}
+
+function openPost(i) {
+  const post = POSTS[i];
+  document.getElementById('pv-date').textContent = post.date;
+  document.getElementById('pv-title').textContent = post.title;
+  document.getElementById('pv-body').innerHTML = post.body
+    .split('\n\n').map(p => `<p>${p}</p>`).join('');
+  showView('post', null);
+}
+
+// Lightbox
+function openLightbox(index) {
+  lightboxIndex = index;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function updateLightbox() {
+  const photo = lightboxPhotos[lightboxIndex];
+  document.getElementById('lightbox-img').src = photo.src || '';
+  document.getElementById('lightbox-caption').textContent = photo.caption;
+  document.getElementById('lightbox-prev').style.visibility = lightboxIndex > 0 ? 'visible' : 'hidden';
+  document.getElementById('lightbox-next').style.visibility = lightboxIndex < lightboxPhotos.length - 1 ? 'visible' : 'hidden';
+}
+
+function lightboxNav(dir) {
+  lightboxIndex = Math.max(0, Math.min(lightboxPhotos.length - 1, lightboxIndex + dir));
+  updateLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function handleLightboxClick(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lightboxNav(-1);
+  if (e.key === 'ArrowRight') lightboxNav(1);
+});
 </script>
 </body>
 </html>
